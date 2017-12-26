@@ -10,17 +10,17 @@ namespace MaiReo.Messages.Abstractions
 {
     public interface IMessageConfiguration
     {
-        string Schema { get; }
+        string Schema { get; set; }
 
-        IPAddress ListenAddress { get; }
+        IPAddress ListenAddress { get; set; }
 
-        string ListenAddressForPubSub { get; }
+        string ListenAddressForPubSub { get; set; }
 
-        int HighWatermark { get; }
+        int HighWatermark { get; set; }
 
-        int XSubPort { get; }
+        int XSubPort { get; set; }
 
-        int XPubPort { get; }
+        int XPubPort { get; set; }
 
         event MessagePublishingEventHandler MessagePublishing;
 
@@ -30,7 +30,7 @@ namespace MaiReo.Messages.Abstractions
 
         Task OnMessageReceivingAsync( MessageReceivingEventArgs e, CancellationToken cancellationToken = default( CancellationToken ) );
 
-        string[] SubscribingMessageTopics { get; }
+        HashSet<string> SubscribingMessageTopics { get; }
 
     }
 }

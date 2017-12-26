@@ -88,10 +88,9 @@ namespace MaiReo.Messages.Tests
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
-            config.SubscribingMessageTopics = new string[] 
-            {
-                "TestTopic", "TestTopic2"
-            };
+            config.SubscribingMessageTopics.Add( "TestTopic" );
+            config.SubscribingMessageTopics.Add( "TestTopic2" );
+           
             config.MessageReceiving += ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessageReceivingEventArgs );

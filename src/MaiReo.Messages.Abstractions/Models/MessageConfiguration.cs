@@ -26,7 +26,7 @@ namespace MaiReo.Messages.Abstractions
 
         public MessageConfiguration()
         {
-
+            SubscribingMessageTopics = new HashSet<string>();
         }
         public virtual string Schema { get; set; }
 
@@ -40,7 +40,7 @@ namespace MaiReo.Messages.Abstractions
 
         public virtual int HighWatermark { get; set; }
 
-        public string[] SubscribingMessageTopics { get; set; }
+        public HashSet<string> SubscribingMessageTopics { get; }
 
         public virtual event MessagePublishingEventHandler MessagePublishing;
         public virtual event MessageReceivingEventHandler MessageReceiving;
