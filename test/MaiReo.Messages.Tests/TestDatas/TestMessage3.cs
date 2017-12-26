@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MaiReo.Messages.Tests
 {
-    [MessageTopic( "TestTopic3" )]
+    [MessageTopic( "3TestTopic" )]
     public class TestMessage3 : IMessage
     {
         public string String { get; set; }

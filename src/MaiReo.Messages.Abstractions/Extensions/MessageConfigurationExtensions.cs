@@ -43,7 +43,7 @@ namespace MaiReo.Messages.Abstractions
             if (!Uri.TryCreate( $"{configuration.Schema}://{address}:{configuration.XPubPort}",
                 UriKind.Absolute, out var xpubAddr ))
                 return false;
-            if (configuration.HighWatermark < 1)
+            if (configuration.HighWatermark < 0)
                 return false;
             return true;
         }

@@ -19,12 +19,12 @@ namespace MaiReo.Messages.Receiver
             _cancellationTokenSource = new CancellationTokenSource();
         }
         public NetmqXSubscriberWrapper(
-            IMessageConfiguration configuration )
+            IMessageConfiguration configuration)
             : this()
         {
             if (!configuration.IsValid())
-                throw new ArgumentException( "configuration is invalid!",
-                    nameof( configuration ) );
+                throw new ArgumentException("configuration is invalid!",
+                    nameof(configuration));
             this._configuration = configuration;
         }
 
@@ -39,38 +39,38 @@ namespace MaiReo.Messages.Receiver
             }
             var connectionString = $">{_configuration.Schema}://{_configuration.ListenAddressForPubSub}:{_configuration.XPubPort}";
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine( $"[{nameof( NetmqXSubscriberWrapper )}] Sub on:{connectionString}" );
+            System.Diagnostics.Debug.WriteLine($"[{nameof(NetmqXSubscriberWrapper)}] Sub on:{connectionString}");
 #endif
             var cancellationTokenSource = _cancellationTokenSource = new CancellationTokenSource();
-            _receiveTask = Task.Run( () =>
-            {
-                using (var subscriber = new SubscriberSocket( connectionString ))
-                {
-                    subscriber.Options.ReceiveHighWatermark
-                            = _configuration.HighWatermark;
-                    if (_configuration.SubscribingMessageTopics?.Any() == true)
-                    {
-                        foreach (var topic in _configuration.SubscribingMessageTopics)
-                        {
-                            subscriber.Subscribe( topic );
-                        }
-                    }
-                    else
-                    {
-                        subscriber.SubscribeToAnyTopic();
-                    }
-
-                    do
-                    {
-                        var topic = subscriber.ReceiveFrameString();
-                        var timestamp = DateTimeOffset.FromUnixTimeMilliseconds( BitConverter.ToInt64( subscriber.ReceiveFrameBytes(), 0 ) );
-                        var message = subscriber.ReceiveFrameString();
-                        var wrapper = new MessageWrapper( topic, message, timestamp );
-                        var eventArgs = new MessageReceivingEventArgs( wrapper );
-                        _configuration.OnMessageReceivingAsync( eventArgs, cancellationTokenSource.Token );
-                    } while (!cancellationTokenSource.IsCancellationRequested);
-                }
-            }, cancellationTokenSource.Token );
+            _receiveTask = Task.Run(() =>
+           {
+               using (var subscriber = new SubscriberSocket(connectionString))
+               {
+                   subscriber.Options.ReceiveHighWatermark
+                           = _configuration.HighWatermark;
+                   if (_configuration.SubscribingMessageTopics?.Any() == true)
+                   {
+                       foreach (var topic in _configuration.SubscribingMessageTopics)
+                       {
+                           subscriber.Subscribe(topic);
+                       }
+                   }
+                   else
+                   {
+                       subscriber.SubscribeToAnyTopic();
+                   }
+                   Task.Delay(500).GetAwaiter().GetResult();
+                   do
+                   {
+                       var topic = subscriber.ReceiveFrameString();
+                       var timestamp = new DateTimeOffset(BitConverter.ToInt64(subscriber.ReceiveFrameBytes(), 0), TimeSpan.FromMinutes(0));
+                       var message = subscriber.ReceiveFrameString();
+                       var wrapper = new MessageWrapper(topic, message, timestamp);
+                       var eventArgs = new MessageReceivingEventArgs(wrapper);
+                       _configuration.OnMessageReceivingAsync(eventArgs, cancellationTokenSource.Token);
+                   } while (!cancellationTokenSource.IsCancellationRequested);
+               }
+           }, cancellationTokenSource.Token);
         }
 
         public virtual void Disconnect()
@@ -90,7 +90,7 @@ namespace MaiReo.Messages.Receiver
             && (!_cancellationTokenSource
                 .IsCancellationRequested);
 
-        protected virtual void Dispose( bool disposing )
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -109,7 +109,7 @@ namespace MaiReo.Messages.Receiver
 
         public void Dispose()
         {
-            Dispose( true );
+            Dispose(true);
         }
         #endregion
     }

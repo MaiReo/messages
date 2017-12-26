@@ -25,7 +25,7 @@ namespace MaiReo.Messages.AbpIntegration.Tests
             config.MessagePublishing += ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessagePublishingEventArgs );
-                e.Timestamp.ShouldBe( timestamp );
+                e.Timestamp.Ticks.ShouldBe( timestamp.Ticks);
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
@@ -33,13 +33,14 @@ namespace MaiReo.Messages.AbpIntegration.Tests
             config.MessageReceiving += ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessageReceivingEventArgs );
-                e.Timestamp.ShouldBe( timestamp );
+                e.Timestamp.Ticks.ShouldBe( timestamp.Ticks);
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
+            await Task.Delay(1000);
             await publisher.PublishAsync( message, timestamp );
-            await Task.Delay( 2000 );
+            await Task.Delay(1000);
 
             config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
             config.LatestMessageReceivingEventArgs.ShouldNotBeNull();

@@ -45,7 +45,7 @@ namespace MaiReo.Messages.Publisher
             if (_publisher == null) Connect();
             _publisher.SendMoreFrame( message.Topic )
                 .SendMoreFrame( BitConverter.GetBytes(
-                    message.Timestamp.ToUnixTimeMilliseconds() ) )
+                    message.Timestamp.Ticks ) )
                 .SendFrame( message.Message );
         }
 
