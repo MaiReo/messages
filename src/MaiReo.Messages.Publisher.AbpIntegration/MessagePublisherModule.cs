@@ -1,41 +1,36 @@
 ﻿using MaiReo.Messages.Abstractions;
-using MaiReo.Messages.Broker;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MaiReo.Messages.Publisher;
 
 namespace Abp.Modules
 {
     [DependsOn( typeof( MessageAbstractionsModule ) )]
-    public class MessageBrokerModule : AbpModule
+    public class MessagePublisherModule : AbpModule
     {
-        private IMessageBroker _messageBroker;
+        private IMessagePublisherWrapper _messagePublisherWrapper;
         public override void PreInitialize()
         {
-            IocManager.Register<IMessageBrokerModuleConfiguration,
-                MessageBrokerModuleConfiguration>();
+            IocManager.Register<IMessagePublisherModuleConfiguration,
+                MessagePublisherModuleConfiguration>();
         }
 
         public override void Initialize()
         {
-            IocManager.RegisterAssemblyByConvention( typeof( MessageBrokerModule ).Assembly );
+            IocManager.RegisterAssemblyByConvention( typeof( MessagePublisherModule ).Assembly );
         }
 
         public override void PostInitialize()
         {
-            RegisterIfNot<IMessageBroker, MessageBroker>();
-            _messageBroker = IocManager.Resolve<IMessageBroker>();
+            RegisterIfNot<IMessagePublisher, MessagePublisher>();
+            RegisterIfNot<IMessagePublisherWrapper, NetmqXPublisherWrapper>();
+            _messagePublisherWrapper = IocManager.Resolve<IMessagePublisherWrapper>();
 
             var config = IocManager.Resolve
-                <IMessageBrokerModuleConfiguration>();
+                <IMessagePublisherModuleConfiguration>();
             if (!config.AutoStart)
             {
                 return;
             }
-            if (!_messageBroker.IsStarted)
-            {
-                _messageBroker.Startup();
-            }
+            _messagePublisherWrapper.Connect();
 
         }
 
@@ -53,7 +48,7 @@ namespace Abp.Modules
         }
         public override void Shutdown()
         {
-            _messageBroker?.Shutdown();
+            _messagePublisherWrapper?.Disconnect();
         }
     }
 }

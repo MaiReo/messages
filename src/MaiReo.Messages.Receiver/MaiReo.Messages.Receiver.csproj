@@ -6,7 +6,7 @@
     <AssemblyOriginatorKeyFile>..\..\MaiReo.Messages.snk</AssemblyOriginatorKeyFile>
     <Authors>MaiReo</Authors>
     <Company />
-    <Description>Message wrapper XPub-XSub broker.</Description>
+    <Description>Message receiver wrapper, connect to X publisher.</Description>
     <Copyright>MaiReo</Copyright>
     <PackageProjectUrl>https://github.com/MaiReo/messages</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/MaiReo/messages/master/LICENSE</PackageLicenseUrl>
@@ -24,5 +24,5 @@
   <ItemGroup>
     <ProjectReference Include="..\MaiReo.Messages.Abstractions\MaiReo.Messages.Abstractions.csproj" />
   </ItemGroup>
-
+  
 </Project>

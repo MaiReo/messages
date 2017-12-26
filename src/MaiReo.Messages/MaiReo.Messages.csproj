@@ -3,10 +3,25 @@
   <ItemGroup>
     <ProjectReference Include="..\MaiReo.Messages.Abstractions\MaiReo.Messages.Abstractions.csproj" />
     <ProjectReference Include="..\MaiReo.Messages.Broker\MaiReo.Messages.Broker.csproj" />
+    <ProjectReference Include="..\MaiReo.Messages.Publisher\MaiReo.Messages.Publisher.csproj" />
+    <ProjectReference Include="..\MaiReo.Messages.Receiver\MaiReo.Messages.Receiver.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\MaiReo.Messages.snk</AssemblyOriginatorKeyFile>
+    <Authors>MaiReo</Authors>
+    <Company />
+    <Description>Message wrappers, this package referenced all wrappers.</Description>
+    <Copyright>MaiReo</Copyright>
+    <PackageProjectUrl>https://github.com/MaiReo/messages</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/MaiReo/messages/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/MaiReo/messages</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>

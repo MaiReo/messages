@@ -6,7 +6,7 @@
     <AssemblyOriginatorKeyFile>..\..\MaiReo.Messages.snk</AssemblyOriginatorKeyFile>
     <Authors>MaiReo</Authors>
     <Company />
-    <Description>Message wrapper XPub-XSub broker.</Description>
+    <Description>Message publisher wrapper, connect to the X subscriber.</Description>
     <Copyright>MaiReo</Copyright>
     <PackageProjectUrl>https://github.com/MaiReo/messages</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/MaiReo/messages/master/LICENSE</PackageLicenseUrl>
@@ -19,8 +19,9 @@
 
   <ItemGroup>
     <PackageReference Include="NetMQ" Version="4.0.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MaiReo.Messages.Abstractions\MaiReo.Messages.Abstractions.csproj" />
   </ItemGroup>

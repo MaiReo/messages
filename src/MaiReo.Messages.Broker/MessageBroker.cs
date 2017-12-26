@@ -3,6 +3,7 @@ using MaiReo.Messages.Abstractions.Core;
 using NetMQ;
 using NetMQ.Sockets;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,26 +11,30 @@ namespace MaiReo.Messages.Broker
 {
     public class MessageBroker : IMessageBroker
     {
-        private readonly IMessageBrokerConfiguration _configuration;
+        private readonly IMessageConfiguration _configuration;
         private CancellationTokenSource _cancellationTokenSource;
 
         private Task _proxyTask;
+
+        private Proxy _proxy;
         private MessageBroker()
         {
-            _configuration = MessageBrokerConfiguration.Default;
+            _cancellationTokenSource = new CancellationTokenSource();
         }
-
         public MessageBroker(
-            IMessageBrokerConfiguration configuration ) : this()
+            IMessageConfiguration configuration )
+            : this()
         {
             if (!configuration.IsValid())
             {
                 throw new ArgumentException( $"nameof(configuration) is not valid!" );
             }
             this._configuration = configuration;
+
         }
         public bool IsStarted
-            => _proxyTask != null && (!_proxyTask.IsCompleted);
+            => _proxyTask != null && (!_proxyTask.IsCompleted)
+            && (!_cancellationTokenSource.IsCancellationRequested);
         public IMessageBroker Startup()
         {
             if (IsStarted)
@@ -39,11 +44,18 @@ namespace MaiReo.Messages.Broker
             _cancellationTokenSource = new CancellationTokenSource();
             _proxyTask = Task.Run( () =>
             {
-                using (var xsubSocket = new XSubscriberSocket( "@" + _configuration.XSubAddress ))
-                using (var xpubSocket = new XPublisherSocket( "@" + _configuration.XPubAddress ))
+                var address = _configuration.GetAddress();
+                var pubAddress = $"@{_configuration.Schema}://{address}:{_configuration.XPubPort}";
+                var subAddress = $"@{_configuration.Schema}://{address}:{_configuration.XSubPort}";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine( $"[{nameof( MessageBroker )}]XPub listening on: {pubAddress}" );
+                System.Diagnostics.Debug.WriteLine( $"[{nameof( MessageBroker )}]XSub listening on: {subAddress}" );
+#endif
+                using (var xpubSocket = new XPublisherSocket( pubAddress ))
+                using (var xsubSocket = new XSubscriberSocket( subAddress ))
                 {
                     //proxy messages between frontend / backend
-                    var proxy = new Proxy( xsubSocket, xpubSocket );
+                    var proxy = _proxy = new Proxy( xsubSocket, xpubSocket );
                     //WARNING:blocks indefinitely.
                     proxy.Start();
                 }
@@ -53,6 +65,14 @@ namespace MaiReo.Messages.Broker
 
         public IMessageBroker Shutdown()
         {
+            try
+            {
+                _proxy?.Stop();
+                _proxy = null;
+            }
+            catch
+            {
+            }
             if (!_cancellationTokenSource.IsCancellationRequested)
             {
                 _cancellationTokenSource.Cancel();

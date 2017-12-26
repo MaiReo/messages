@@ -2,6 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\MaiReo.Messages.snk</AssemblyOriginatorKeyFile>
+    <Authors>MaiReo</Authors>
+    <Company />
+    <Description>Message wrapper abstractions.</Description>
+    <Copyright>MaiReo</Copyright>
+    <PackageProjectUrl>https://github.com/MaiReo/messages</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/MaiReo/messages/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/MaiReo/messages</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>

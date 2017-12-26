@@ -1,41 +1,36 @@
 ﻿using MaiReo.Messages.Abstractions;
-using MaiReo.Messages.Broker;
+using MaiReo.Messages.Receiver;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Abp.Modules
 {
     [DependsOn( typeof( MessageAbstractionsModule ) )]
-    public class MessageBrokerModule : AbpModule
+    public class MessageReceiverModule : AbpModule
     {
-        private IMessageBroker _messageBroker;
+        private IMessageReceiverWrapper _messageReceiverWrapper;
         public override void PreInitialize()
         {
-            IocManager.Register<IMessageBrokerModuleConfiguration,
-                MessageBrokerModuleConfiguration>();
+            IocManager.Register<IMessageReceiverModuleConfiguration,
+                MessageReceiverModuleConfiguration>();
         }
 
         public override void Initialize()
         {
-            IocManager.RegisterAssemblyByConvention( typeof( MessageBrokerModule ).Assembly );
+            IocManager.RegisterAssemblyByConvention( typeof( MessageReceiverModule ).Assembly );
         }
 
         public override void PostInitialize()
         {
-            RegisterIfNot<IMessageBroker, MessageBroker>();
-            _messageBroker = IocManager.Resolve<IMessageBroker>();
+            RegisterIfNot<IMessageReceiverWrapper, NetmqXSubscriberWrapper>();
+            _messageReceiverWrapper = IocManager.Resolve<IMessageReceiverWrapper>();
 
             var config = IocManager.Resolve
-                <IMessageBrokerModuleConfiguration>();
+                <IMessageReceiverModuleConfiguration>();
             if (!config.AutoStart)
             {
                 return;
             }
-            if (!_messageBroker.IsStarted)
-            {
-                _messageBroker.Startup();
-            }
+            _messageReceiverWrapper.Connect();
 
         }
 
@@ -53,7 +48,7 @@ namespace Abp.Modules
         }
         public override void Shutdown()
         {
-            _messageBroker?.Shutdown();
+            _messageReceiverWrapper?.Disconnect();
         }
     }
 }

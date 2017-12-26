@@ -1,12 +1,9 @@
 ﻿using MaiReo.Messages.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MaiReo.Messages.Broker.AbpIntegration
+namespace MaiReo.Messages.Broker
 {
-    public class MessageBrokerModuleConfiguration : MessageBrokerConfiguration, IMessageBrokerModuleConfiguration, IMessageBrokerConfiguration
+    public class MessageBrokerModuleConfiguration : MessageConfiguration, IMessageBrokerModuleConfiguration, IMessageConfiguration
     {
-        public bool AutoStartBroker { get; set; }
+        public bool AutoStart { get; set; }
     }
 }

@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>MaiReo.Messages.Abstractions</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\MaiReo.Messages.snk</AssemblyOriginatorKeyFile>
     <Authors>MaiReo</Authors>
     <Company />
-    <Description>Message wrapper XPub-XSub broker.</Description>
+    <Description>Message wrapper abstractions as abp module.</Description>
     <Copyright>MaiReo</Copyright>
     <PackageProjectUrl>https://github.com/MaiReo/messages</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/MaiReo/messages/master/LICENSE</PackageLicenseUrl>
@@ -14,13 +15,12 @@
     <RepositoryType>git</RepositoryType>
     <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="NetMQ" Version="4.0.0.1" />
+    <PackageReference Include="Abp" Version="3.2.4" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MaiReo.Messages.Abstractions\MaiReo.Messages.Abstractions.csproj" />
   </ItemGroup>

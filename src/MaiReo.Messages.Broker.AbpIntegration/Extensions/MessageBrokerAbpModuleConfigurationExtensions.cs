@@ -1,13 +1,14 @@
 ﻿using Abp.Configuration.Startup;
+using MaiReo.Messages.Broker;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaiReo.Messages.Broker.AbpIntegration
+namespace Abp.Modules
 {
-    public static class AbpModuleConfigurationExtensions
+    public static class MessageBrokerAbpModuleConfigurationExtensions
     {
-        public static IMessageBrokerModuleConfiguration MaiReoMessagesBroker(
+        public static IMessageBrokerModuleConfiguration MessagesBroker(
             this IModuleConfigurations modules )
         {
             return modules.AbpConfiguration.Get<IMessageBrokerModuleConfiguration>();
