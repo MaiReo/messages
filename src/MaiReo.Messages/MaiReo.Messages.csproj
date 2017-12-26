@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\MaiReo.Messages.Abstractions\MaiReo.Messages.Abstractions.csproj" />
+    <ProjectReference Include="..\MaiReo.Messages.Broker\MaiReo.Messages.Broker.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
