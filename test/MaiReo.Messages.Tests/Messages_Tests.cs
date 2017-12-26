@@ -13,7 +13,7 @@ namespace MaiReo.Messages.Tests
     public class Messages_Tests
     {
         [Fact]
-        public async Task MessageTest()
+        public async Task AllTopic()
         {
             var config = new TestMessageConfiguration();
             config.IsValid().ShouldBe( true );
@@ -58,6 +58,66 @@ namespace MaiReo.Messages.Tests
             config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
             config.LatestMessageReceivingEventArgs.ShouldNotBeNull();
 
+        }
+
+        [Fact]
+        public async Task SpecifingTopics()
+        {
+            var config = new TestMessageConfiguration();
+            config.IsValid().ShouldBe( true );
+            var stringPropertyValue = "string";
+            var message1 = new TestMessage
+            {
+                String = stringPropertyValue
+            };
+            var message2 = new TestMessage2
+            {
+                String = stringPropertyValue
+            };
+            var message3 = new TestMessage3
+            {
+                String = stringPropertyValue
+            };
+            var timestamp = DateTimeOffset.UtcNow;
+            config.MessagePublishing += ( sender, e ) =>
+            {
+                e.ShouldBe( config.LatestMessagePublishingEventArgs );
+                e.Timestamp.ShouldBe( timestamp );
+                new[] { "TestTopic", "TestTopic2", "TestTopic3" }
+                .ShouldContain( e.Topic );
+                var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
+                strongTyped.String.ShouldBe( stringPropertyValue );
+            };
+            config.SubscribingMessageTopics = new string[] 
+            {
+                "TestTopic", "TestTopic2"
+            };
+            config.MessageReceiving += ( sender, e ) =>
+            {
+                e.ShouldBe( config.LatestMessageReceivingEventArgs );
+                e.Timestamp.ShouldBe( timestamp );
+                config.SubscribingMessageTopics.ShouldContain( e.Topic );
+                var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
+                strongTyped.String.ShouldBe( stringPropertyValue );
+            };
+            var broker = new MessageBroker( config );
+            var publisherWrapper = new NetmqXPublisherWrapper( config );
+            var receiverWrapper = new NetmqXSubscriberWrapper( config );
+            var publisher = new MessagePublisher( config, publisherWrapper );
+            broker.Startup();
+            publisherWrapper.Connect();
+            receiverWrapper.Connect();
+            await publisher.PublishAsync( message1, timestamp );
+            await Task.Delay( 2000 );
+            await publisher.PublishAsync( message2, timestamp );
+            await Task.Delay( 2000 );
+            await publisher.PublishAsync( message3, timestamp );
+            await Task.Delay( 2000 );
+            publisherWrapper.Disconnect();
+            receiverWrapper.Disconnect();
+            broker.Shutdown();
+            config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
+            config.LatestMessageReceivingEventArgs.ShouldNotBeNull();
         }
     }
 }

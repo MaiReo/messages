@@ -3,6 +3,7 @@ using MaiReo.Messages.Abstractions.Events;
 using NetMQ;
 using NetMQ.Sockets;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,7 +48,18 @@ namespace MaiReo.Messages.Receiver
                 {
                     subscriber.Options.ReceiveHighWatermark
                             = _configuration.HighWatermark;
-                    subscriber.SubscribeToAnyTopic();
+                    if (_configuration.SubscribingMessageTopics?.Any() == true)
+                    {
+                        foreach (var topic in _configuration.SubscribingMessageTopics)
+                        {
+                            subscriber.Subscribe( topic );
+                        }
+                    }
+                    else
+                    {
+                        subscriber.SubscribeToAnyTopic();
+                    }
+
                     do
                     {
                         var topic = subscriber.ReceiveFrameString();

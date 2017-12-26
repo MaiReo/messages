@@ -30,5 +30,7 @@ namespace MaiReo.Messages.Abstractions
 
         Task OnMessageReceivingAsync( MessageReceivingEventArgs e, CancellationToken cancellationToken = default( CancellationToken ) );
 
+        string[] SubscribingMessageTopics { get; }
+
     }
 }
