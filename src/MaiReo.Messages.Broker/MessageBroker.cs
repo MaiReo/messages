@@ -1,5 +1,4 @@
 ﻿using MaiReo.Messages.Abstractions;
-using MaiReo.Messages.Abstractions.Core;
 using NetMQ;
 using NetMQ.Sockets;
 using System;
