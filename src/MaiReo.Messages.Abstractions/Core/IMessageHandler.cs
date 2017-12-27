@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MaiReo.Messages.Abstractions.Core
+namespace MaiReo.Messages.Abstractions
 {
     public interface IMessageHandler
     {
@@ -12,6 +12,6 @@ namespace MaiReo.Messages.Abstractions.Core
     public interface IMessageHandler<in T> : IMessageHandler
         where T : class, IMessage, new()
     {
-        Task HandleMessageAsync( T message );
+        Task HandleMessageAsync( T message, DateTimeOffset timestamp );
     }
 }
