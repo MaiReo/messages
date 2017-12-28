@@ -16,7 +16,7 @@ namespace MaiReo.Messages.Abstractions
             Default = new MessageConfiguration
             {
                 Schema = "tcp",
-                ListenAddress = IPAddress.IPv6Any,
+                ListenAddress = IPAddress.Any,
                 XSubPort = 5010,
                 XPubPort = 5011,
                 ListenAddressForPubSub = "messagebroker",
