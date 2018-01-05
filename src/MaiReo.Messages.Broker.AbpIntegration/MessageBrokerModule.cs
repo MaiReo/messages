@@ -14,6 +14,8 @@ namespace Abp.Modules
         {
             IocManager.Register<IMessageBrokerModuleConfiguration,
                 MessageBrokerModuleConfiguration>();
+            IocManager.Register<IMessageBrokerLogger,
+                ConsoleMessageBrokerLogger>();
         }
 
         public override void Initialize()

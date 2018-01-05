@@ -22,8 +22,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
 </Project>

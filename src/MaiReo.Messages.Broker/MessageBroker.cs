@@ -29,8 +29,11 @@ namespace MaiReo.Messages.Broker
                 throw new ArgumentException( $"nameof(configuration) is not valid!" );
             }
             this._configuration = configuration;
-
+            Logger = NullMessageBrokerLogger.Default;
         }
+
+        public IMessageBrokerLogger Logger { get; set; }
+
         public bool IsStarted
             => _proxyTask != null && (!_proxyTask.IsCompleted)
             && (!_cancellationTokenSource.IsCancellationRequested);
@@ -40,7 +43,7 @@ namespace MaiReo.Messages.Broker
             {
                 return this;
             }
-            _cancellationTokenSource = new CancellationTokenSource();
+            var cancellationTokenSource = _cancellationTokenSource = new CancellationTokenSource();
             _proxyTask = Task.Run( () =>
             {
                 var address = _configuration.GetAddress();
@@ -52,18 +55,47 @@ namespace MaiReo.Messages.Broker
 #endif
                 using (var xpubSocket = new XPublisherSocket( pubAddress ))
                 using (var xsubSocket = new XSubscriberSocket( subAddress ))
+                using (var controlIn = new DealerSocket( "@inproc://control-in" ))
+                using (var controlOut = new DealerSocket( "@inproc://control-out" ))
+                using (var controlInRecv = new DealerSocket( ">inproc://control-in" ))
+                using (var controlOutRecv = new DealerSocket( ">inproc://control-out" ))
                 {
+                    Task.Run( () =>
+                    {
+                        while (!cancellationTokenSource.IsCancellationRequested)
+                        {
+                            try
+                            {
+                                var topic = controlInRecv.ReceiveFrameString();
+                                var timestamp_bytes = controlInRecv.ReceiveFrameBytes();
+                                var timestamp_int64 = BitConverter.ToInt64( timestamp_bytes, 0 );
+                                var timestamp = new DateTimeOffset( timestamp_int64, TimeSpan.FromMinutes( 0 ) );
+                                var message = controlInRecv.ReceiveFrameString();
+                                var wrapper = new MessageWrapper( topic, message, timestamp );
+                                Logger?.LogReceive( wrapper );
+                            }
+                            catch (System.ObjectDisposedException)
+                            {
+                                return;
+                            }
+
+                        }
+                    }, cancellationTokenSource.Token );
                     //proxy messages between frontend / backend
-                    var proxy = _proxy = new Proxy( xsubSocket, xpubSocket );
+                    var proxy = _proxy = new Proxy( xsubSocket, xpubSocket, controlIn, controlOut );
                     //WARNING:blocks indefinitely.
                     proxy.Start();
                 }
-            }, _cancellationTokenSource.Token );
+            }, cancellationTokenSource.Token );
             return this;
         }
 
         public IMessageBroker Shutdown()
         {
+            if (!_cancellationTokenSource.IsCancellationRequested)
+            {
+                _cancellationTokenSource.Cancel();
+            }
             try
             {
                 _proxy?.Stop();
@@ -72,10 +104,7 @@ namespace MaiReo.Messages.Broker
             catch
             {
             }
-            if (!_cancellationTokenSource.IsCancellationRequested)
-            {
-                _cancellationTokenSource.Cancel();
-            }
+            
             return this;
         }
 
