@@ -6,22 +6,21 @@ using MaiReo.Messages.Abstractions.Events;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace MaiReo.Messages.Tests
 {
     public class TestMessageConfiguration : MessageConfiguration, IMessageConfiguration
     {
-        public override string Schema => "tcp";
+        public override string BrokerAddress =>
+            "test.baishijiaju.com";
+        //"101.200.53.90";
+        //"192.168.122.1";
 
-        public override IPAddress ListenAddress => IPAddress.IPv6Loopback;
+        public override int BrokerPort => Default.BrokerPort;
 
-        public override string ListenAddressForPubSub => this.GetAddress();
+        public override string ReceiverGroupId => typeof( TestMessageConfiguration ).Assembly.GetName().Name;
 
-        public override int HighWatermark => 1000;
-
-        public override int XSubPort => 5555;
-
-        public override int XPubPort => 5666;
 
         public virtual MessagePublishingEventArgs LatestMessagePublishingEventArgs { get; protected set; }
 

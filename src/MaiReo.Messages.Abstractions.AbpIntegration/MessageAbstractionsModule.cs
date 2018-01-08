@@ -14,14 +14,5 @@ namespace Abp.Modules
 
         }
 
-        public override void PostInitialize()
-        {
-            if (!IocManager.IsRegistered<IMessageBrokerLogger>())
-            {
-                IocManager.Register<IMessageBrokerLogger,
-                NullMessageBrokerLogger>();
-            }
-        }
-
     }
 }

@@ -11,17 +11,16 @@ namespace MaiReo.Messages.Tests
 {
     public class TestMessageConfiguration : MessageConfiguration, IMessageConfiguration
     {
-        public override string Schema => "tcp";
+        public override string BrokerAddress => "test.baishijiaju.com";
 
-        public override IPAddress ListenAddress => IPAddress.IPv6Loopback;
+        public override int BrokerPort => Default.BrokerPort;
 
-        public override string ListenAddressForPubSub => this.GetAddress();
+        public override string ReceiverGroupId => typeof( TestMessageConfiguration ).Assembly.GetName().Name;
 
-        public override int HighWatermark => 1000;
-
-        public override int XSubPort => 5555;
-
-        public override int XPubPort => 5666;
+        public override ISet<string> Subscription => new HashSet<string>()
+        {
+            "TestTopic"
+        };
 
         public virtual MessagePublishingEventArgs LatestMessagePublishingEventArgs { get; protected set; }
 

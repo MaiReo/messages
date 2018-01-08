@@ -6,7 +6,7 @@
     <AssemblyOriginatorKeyFile>..\..\MaiReo.Messages.snk</AssemblyOriginatorKeyFile>
     <Authors>MaiReo</Authors>
     <Company />
-    <Description>Message receiver wrapper, connect to X publisher.</Description>
+    <Description>Message receiver wrapper, using the Apache Kafka Consumer.</Description>
     <Copyright>MaiReo</Copyright>
     <PackageProjectUrl>https://github.com/MaiReo/messages</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/MaiReo/messages/master/LICENSE</PackageLicenseUrl>
@@ -15,11 +15,11 @@
     <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetMQ" Version="4.0.0.1" />
+    <PackageReference Include="Confluent.Kafka" Version="0.11.3" />
   </ItemGroup>
 
   <ItemGroup>

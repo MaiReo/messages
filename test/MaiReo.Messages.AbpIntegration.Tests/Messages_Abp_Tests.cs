@@ -14,18 +14,17 @@ namespace MaiReo.Messages.AbpIntegration.Tests
         public async Task Messages_Abp_Test()
         {
             var config = Resolve<IMessageConfiguration>() as TestMessageConfiguration;
-            var publisher = Resolve<IMessagePublisher>();
             config.IsValid().ShouldBe( true );
+            var publisher = Resolve<IMessagePublisher>();
+            
             var stringPropertyValue = "string";
             var message = new TestMessage
             {
                 String = stringPropertyValue
             };
-            var timestamp = DateTimeOffset.UtcNow;
             config.MessagePublishing += ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessagePublishingEventArgs );
-                e.Timestamp.Ticks.ShouldBe( timestamp.Ticks);
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
@@ -33,15 +32,12 @@ namespace MaiReo.Messages.AbpIntegration.Tests
             config.MessageReceiving += ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessageReceivingEventArgs );
-                e.Timestamp.Ticks.ShouldBe( timestamp.Ticks);
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
-            await Task.Delay(1000);
-            await publisher.PublishAsync( message, timestamp );
-            await Task.Delay(1000);
-
+            await publisher.PublishAsync( message ).ConfigureAwait( false );
+            await Task.Delay( 10000 ).ConfigureAwait( false );
             config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
             config.LatestMessageReceivingEventArgs.ShouldNotBeNull();
         }

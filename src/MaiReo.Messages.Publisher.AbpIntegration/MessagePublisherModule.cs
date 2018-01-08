@@ -20,8 +20,11 @@ namespace Abp.Modules
 
         public override void PostInitialize()
         {
+            RegisterIfNot<IKafkaProducerOption, KafkaProducerOption>();
+            RegisterIfNot<IKafkaProducerBuilder, KafkaProducerBuilder>();
+            RegisterIfNot<IMessagePublisherWrapper, KafkaProducerWrapper>();
             RegisterIfNot<IMessagePublisher, MessagePublisher>();
-            RegisterIfNot<IMessagePublisherWrapper, NetmqXPublisherWrapper>();
+            
             _messagePublisherWrapper = IocManager.Resolve<IMessagePublisherWrapper>();
 
             var config = IocManager.Resolve

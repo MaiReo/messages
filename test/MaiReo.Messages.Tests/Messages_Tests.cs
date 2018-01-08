@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Xunit;
 using Shouldly;
 using Newtonsoft.Json;
-using MaiReo.Messages.Broker;
 using MaiReo.Messages.Publisher;
 using MaiReo.Messages.Receiver;
 using System.Collections.Generic;
@@ -14,55 +13,44 @@ namespace MaiReo.Messages.Tests
     public class Messages_Tests
     {
         [Fact]
-        public async Task AllTopic()
+        public async Task OneTopic()
         {
             var config = new TestMessageConfiguration();
+            config.Subscription.Add( "TestTopic" );
             config.IsValid().ShouldBe( true );
             var stringPropertyValue = "string";
             var message = new TestMessage
             {
                 String = stringPropertyValue
             };
-            var timestamp = DateTimeOffset.UtcNow;
             config.MessagePublishing += ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessagePublishingEventArgs );
-                e.Timestamp.ShouldBe( timestamp );
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
             config.MessageReceiving += ( sender, e ) =>
             {
-                e.ShouldBe( config.LatestMessageReceivingEventArgs );
-                e.Timestamp.ShouldBe( timestamp );
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
-            var broker = new MessageBroker( config )
-            {
-                Logger = new ConsoleMessageBrokerLogger()
-            };
-            var publisherWrapper = new NetmqXPublisherWrapper( config );
-            var receiverWrapper = new NetmqXSubscriberWrapper( config );
+            var publisherWrapper = new KafkaProducerWrapper( config );
+            var receiverWrapper = new KafkaConsumerWrapper( config );
             var publisher = new MessagePublisher( config, publisherWrapper );
-            broker.Startup();
-            broker.IsStarted.ShouldBe( true );
-            await Task.Delay( 1000 );
             receiverWrapper.Connect();
-            receiverWrapper.IsConnected.ShouldBe( true );
             publisherWrapper.Connect();
-            await Task.Delay( 1000 );
-            await publisher.PublishAsync( message, timestamp );
-            await Task.Delay( 1000 );
+            receiverWrapper.IsConnected.ShouldBe( true );
+            publisherWrapper.IsConnected.ShouldBe( true );
+            await publisher.PublishAsync( message );
             publisherWrapper.Disconnect();
+            publisherWrapper.IsConnected.ShouldBe( false );
+            config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
+            await Task.Delay( 10000 ).ConfigureAwait( false );
+            config.LatestMessageReceivingEventArgs.ShouldNotBeNull();
             receiverWrapper.Disconnect();
             receiverWrapper.IsConnected.ShouldBe( false );
-            broker.Shutdown();
-            broker.IsStarted.ShouldBe( false );
-            config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
-            config.LatestMessageReceivingEventArgs.ShouldNotBeNull();
         }
 
         [Fact]
@@ -72,7 +60,6 @@ namespace MaiReo.Messages.Tests
             var pubCount = 0;
             var subCount = 0;
             var subTopicList = new List<string>();
-            var timestamp = DateTimeOffset.UtcNow;
             config.IsValid().ShouldBe( true );
             var stringPropertyValue = "string";
             var message1 = new TestMessage
@@ -92,40 +79,33 @@ namespace MaiReo.Messages.Tests
             {
                 pubCount++;
                 e.ShouldBe( config.LatestMessagePublishingEventArgs );
-                e.Timestamp.ShouldBe( timestamp );
                 new[] { "TestTopic", "2TestTopic", "3TestTopic" }
                 .ShouldContain( e.Topic );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
-            config.SubscribingMessageTopics.Add( "2TestTopic" );
-            config.SubscribingMessageTopics.Add( "3TestTopic" );
+            config.Subscription.Add( "2TestTopic" );
+            config.Subscription.Add( "3TestTopic" );
 
             config.MessageReceiving += ( sender, e ) =>
             {
                 subCount++;
                 subTopicList.Add( e.Topic );
-                e.Timestamp.ShouldBe( timestamp );
-                config.SubscribingMessageTopics.ShouldContain( e.Topic );
+                config.Subscription.ShouldContain( e.Topic );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
-            var broker = new MessageBroker( config );
-            var publisherWrapper = new NetmqXPublisherWrapper( config );
-            var receiverWrapper = new NetmqXSubscriberWrapper( config );
+            var publisherWrapper = new KafkaProducerWrapper( config );
+            var receiverWrapper = new KafkaConsumerWrapper( config );
             var publisher = new MessagePublisher( config, publisherWrapper );
-            broker.Startup();
-            await Task.Delay( 1000 );
             receiverWrapper.Connect();
-            await Task.Delay( 1000 );
             publisherWrapper.Connect();
-            await publisher.PublishAsync( message1, timestamp );
-            await publisher.PublishAsync( message2, timestamp );
-            await publisher.PublishAsync( message3, timestamp );
+            await publisher.PublishAsync( message1 );
+            await publisher.PublishAsync( message2 );
+            await publisher.PublishAsync( message3 );
             publisherWrapper.Disconnect();
-            await Task.Delay( 1000 );
+            await Task.Delay( 10000 ).ConfigureAwait( false );
             receiverWrapper.Disconnect();
-            broker.Shutdown();
             config.LatestMessagePublishingEventArgs.ShouldNotBeNull();
             config.LatestMessageReceivingEventArgs.ShouldNotBeNull();
             pubCount.ShouldBe( 3 );

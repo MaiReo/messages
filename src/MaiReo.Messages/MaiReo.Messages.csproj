@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MaiReo.Messages.Abstractions\MaiReo.Messages.Abstractions.csproj" />
-    <ProjectReference Include="..\MaiReo.Messages.Broker\MaiReo.Messages.Broker.csproj" />
     <ProjectReference Include="..\MaiReo.Messages.Publisher\MaiReo.Messages.Publisher.csproj" />
     <ProjectReference Include="..\MaiReo.Messages.Receiver\MaiReo.Messages.Receiver.csproj" />
   </ItemGroup>
@@ -22,7 +21,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.1.1</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
 </Project>

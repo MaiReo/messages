@@ -14,13 +14,12 @@
     <RepositoryType>git</RepositoryType>
     <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.1</Version>
+    <Version>2.0.0</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\MaiReo.Messages.Abstractions.AbpIntegration\MaiReo.Messages.Abstractions.AbpIntegration.csproj" />
-    <ProjectReference Include="..\MaiReo.Messages.Broker.AbpIntegration\MaiReo.Messages.Broker.AbpIntegration.csproj" />
     <ProjectReference Include="..\MaiReo.Messages.Publisher.AbpIntegration\MaiReo.Messages.Publisher.AbpIntegration.csproj" />
     <ProjectReference Include="..\MaiReo.Messages.Receiver.AbpIntegration\MaiReo.Messages.Receiver.AbpIntegration.csproj" />
     <ProjectReference Include="..\MaiReo.Messages\MaiReo.Messages.csproj" />

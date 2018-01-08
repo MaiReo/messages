@@ -4,7 +4,6 @@ namespace Abp.Modules
 {
     [DependsOn(
         typeof( MessageAbstractionsModule ),
-        typeof( MessageBrokerModule ),
         typeof( MessagePublisherModule ),
         typeof( MessageReceiverModule )
         )]

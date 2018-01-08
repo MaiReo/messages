@@ -15,32 +15,30 @@ namespace MaiReo.Messages.Abstractions
         {
             Default = new MessageConfiguration
             {
-                Schema = "tcp",
-                ListenAddress = IPAddress.Any,
-                XSubPort = 5010,
-                XPubPort = 5011,
-                ListenAddressForPubSub = "messagebroker",
-                HighWatermark = 1000
+                BrokerPort = 8092,
+                BrokerAddress = "127.0.0.1",
+                PublisherDelayBeforeSend = 1,
+                PublisherRetryCount = 0,
+                ReceiverAutoCommitEnabled = true,
+                ReceiverAutoCommitInterval = 100,
+                PublisherTimeout = 5000
             };
         }
 
         public MessageConfiguration()
         {
-            SubscribingMessageTopics = new HashSet<string>();
+            Subscription = new HashSet<string>();
         }
-        public virtual string Schema { get; set; }
+        public virtual string BrokerAddress { get; set; }
+        public virtual int BrokerPort { get; set; }
 
-        public virtual IPAddress ListenAddress { get; set; }
-
-        public virtual int XSubPort { get; set; }
-
-        public virtual int XPubPort { get; set; }
-
-        public virtual string ListenAddressForPubSub { get; set; }
-
-        public virtual int HighWatermark { get; set; }
-
-        public HashSet<string> SubscribingMessageTopics { get; }
+        public virtual ISet<string> Subscription { get; }
+        public virtual string ReceiverGroupId { get; set; }
+        public int? PublisherRetryCount { get; set; }
+        public int? PublisherDelayBeforeSend { get; set; }
+        public bool? ReceiverAutoCommitEnabled { get; set; }
+        public int? ReceiverAutoCommitInterval { get; set; }
+        public int? PublisherTimeout { get; set; }
 
         public virtual event MessagePublishingEventHandler MessagePublishing;
         public virtual event MessageReceivingEventHandler MessageReceiving;

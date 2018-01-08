@@ -9,8 +9,7 @@ namespace MaiReo.Messages.Abstractions
     public interface IMessagePublisher
     {
         Task PublishAsync<T>( T message,
-            DateTimeOffset? timestamp = null,
-            [CallerMemberName]string callerMemberName = "")
+            [CallerMemberName]string callerMemberName = "" )
             where T : class, IMessage, new();
     }
 

@@ -10,17 +10,40 @@ namespace MaiReo.Messages.Abstractions
 {
     public interface IMessageConfiguration
     {
-        string Schema { get; set; }
+        #region Broker
+        string BrokerAddress { get; set; }
 
-        IPAddress ListenAddress { get; set; }
+        int BrokerPort { get; set; }
 
-        string ListenAddressForPubSub { get; set; }
+        #endregion Broker
 
-        int HighWatermark { get; set; }
+        #region Publisher
+        /// <summary>
+        /// 发送重试次数(次)
+        /// </summary>
+        int? PublisherRetryCount { get; set; }
+        /// <summary>
+        /// 发送前等待时间(毫秒)
+        /// </summary>
+        int? PublisherDelayBeforeSend { get; set; }
+        /// <summary>
+        /// 消息发送超时(毫秒)
+        /// </summary>
+        int? PublisherTimeout { get; set; }
 
-        int XSubPort { get; set; }
+        #endregion Publisher
 
-        int XPubPort { get; set; }
+        #region Receiver
+
+        ISet<string> Subscription { get; }
+
+        string ReceiverGroupId { get; set; }
+        bool? ReceiverAutoCommitEnabled { get; set; }
+        int? ReceiverAutoCommitInterval { get; set; }
+
+        #endregion Receiver
+
+        #region Events
 
         event MessagePublishingEventHandler MessagePublishing;
 
@@ -30,7 +53,7 @@ namespace MaiReo.Messages.Abstractions
 
         Task OnMessageReceivingAsync( MessageReceivingEventArgs e, CancellationToken cancellationToken = default( CancellationToken ) );
 
-        HashSet<string> SubscribingMessageTopics { get; }
+        #endregion Events
 
     }
 }

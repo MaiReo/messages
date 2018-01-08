@@ -26,24 +26,20 @@ namespace MaiReo.Messages.Publisher
         }
 
 
-        public virtual Task PublishAsync<T>(
+        public virtual async Task PublishAsync<T>(
             T message,
-            DateTimeOffset? timestamp = null,
             [CallerMemberName]string callerMemberName = "" )
             where T : class, IMessage, new()
         {
             if (message == default( T ))
                 throw new ArgumentNullException( nameof( message ) );
-            return Task.Run( async () =>
-             {
-                 var topic = message.GetMessageTopicOrDefault<T>();
-                 var json = JsonConvert.SerializeObject( message );
-                 var wrapper = new MessageWrapper( topic, json, timestamp );
-                 _publisherWrapper.Send( wrapper );
-                 var eventArgs = new MessagePublishingEventArgs( wrapper
-                     , callerMemberName );
-                 await _configuration.OnMessagePublishingAsync( eventArgs );
-             } );
+            var topic = message.GetMessageTopicOrDefault<T>();
+            var json = JsonConvert.SerializeObject( message );
+            var wrapper = new MessageWrapper( topic, json );
+            var eventArgs = new MessagePublishingEventArgs( wrapper
+               , callerMemberName );
+            await Task.WhenAll( _publisherWrapper.SendAsync( wrapper ),
+                _configuration.OnMessagePublishingAsync( eventArgs ) );
         }
 
     }

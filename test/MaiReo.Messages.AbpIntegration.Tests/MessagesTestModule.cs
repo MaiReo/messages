@@ -25,7 +25,6 @@ namespace MaiReo.Messages.AbpIntegration.Tests
 
         public override void Initialize()
         {
-            Configuration.Modules.MessagesBroker().AutoStart = true;
             IocManager.RegisterAssemblyByConvention( typeof( MessagesTestModule ).GetAssembly() );
         }
         private void SetupInMemoryDb()

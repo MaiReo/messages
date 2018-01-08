@@ -21,7 +21,9 @@ namespace Abp.Modules
 
         public override void PostInitialize()
         {
-            RegisterIfNot<IMessageReceiverWrapper, NetmqXSubscriberWrapper>();
+            RegisterIfNot<IKafkaConsumerOption, KafkaConsumerOption>();
+            RegisterIfNot<IKafkaConsumerBuilder, KafkaConsumerBuilder>();
+            RegisterIfNot<IMessageReceiverWrapper, KafkaConsumerWrapper>();
             _messageReceiverWrapper = IocManager.Resolve<IMessageReceiverWrapper>();
 
             var config = IocManager.Resolve
