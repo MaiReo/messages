@@ -65,8 +65,15 @@ namespace MaiReo.Messages.Receiver
                     if (consumer.Consume( out var msg, PoolTimeout ))
                     {
                         var topic = msg.Topic;
-                        var timestamp = DateTimeOffset.FromUnixTimeMilliseconds(
-                            msg.Timestamp.UnixTimestampMs );
+                        var timestamp =
+#if NET45
+                        new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.FromHours(0))
+                        .AddMilliseconds(
+#else
+                        DateTimeOffset.FromUnixTimeMilliseconds(
+#endif
+
+                        msg.Timestamp.UnixTimestampMs );
                         var message = msg.Value ?? "{}";
                         var wrapper = new MessageWrapper( topic, message, timestamp );
                         var eventArgs = new MessageReceivingEventArgs( wrapper );
@@ -103,7 +110,7 @@ namespace MaiReo.Messages.Receiver
                 ?? MessageConfiguration.Default.ReceiverAutoCommitInterval;
         }
 
-        #region IDisposable Support
+#region IDisposable Support
         private bool disposedValue = false;
 
 
@@ -131,6 +138,6 @@ namespace MaiReo.Messages.Receiver
         {
             Dispose( true );
         }
-        #endregion
+#endregion
     }
 }

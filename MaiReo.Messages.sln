@@ -39,7 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8C836B0B-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaiReo.Messages.Tests", "test\MaiReo.Messages.Tests\MaiReo.Messages.Tests.csproj", "{EF47B40D-D06E-4DA7-BEDD-3EAB9E9D534F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiReo.Messages.AbpIntegration.Tests", "test\MaiReo.Messages.AbpIntegration.Tests\MaiReo.Messages.AbpIntegration.Tests.csproj", "{BCC97569-5C79-45AE-B58E-1F80842F6E43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaiReo.Messages.AbpIntegration.Tests", "test\MaiReo.Messages.AbpIntegration.Tests\MaiReo.Messages.AbpIntegration.Tests.csproj", "{BCC97569-5C79-45AE-B58E-1F80842F6E43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiReo.Messages.Tests.net452", "test\MaiReo.Messages.Tests.net452\MaiReo.Messages.Tests.net452.csproj", "{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,6 +197,18 @@ Global
 		{BCC97569-5C79-45AE-B58E-1F80842F6E43}.Release|x64.Build.0 = Release|Any CPU
 		{BCC97569-5C79-45AE-B58E-1F80842F6E43}.Release|x86.ActiveCfg = Release|Any CPU
 		{BCC97569-5C79-45AE-B58E-1F80842F6E43}.Release|x86.Build.0 = Release|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Debug|x64.Build.0 = Debug|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Debug|x86.Build.0 = Debug|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Release|x64.ActiveCfg = Release|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Release|x64.Build.0 = Release|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Release|x86.ActiveCfg = Release|Any CPU
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,6 +227,7 @@ Global
 		{885F2AFF-4663-4121-B51F-3D3C031AF6C0} = {E8D17141-9E76-4632-91C8-06CB9C91BD02}
 		{EF47B40D-D06E-4DA7-BEDD-3EAB9E9D534F} = {8C836B0B-57BB-49A1-9D49-504C5789FB71}
 		{BCC97569-5C79-45AE-B58E-1F80842F6E43} = {8C836B0B-57BB-49A1-9D49-504C5789FB71}
+		{0EFF9E27-5FCD-4D5D-8366-BB76B6C891CB} = {8C836B0B-57BB-49A1-9D49-504C5789FB71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52F91E18-6BC1-4AE1-A36E-56283439A2A1}
