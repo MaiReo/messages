@@ -22,14 +22,14 @@ namespace MaiReo.Messages.AbpIntegration.Tests
             {
                 String = stringPropertyValue
             };
-            config.MessagePublishing += ( sender, e ) =>
+            config.MessagePublishing += async ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessagePublishingEventArgs );
                 e.Topic.ShouldBe( "TestTopic" );
                 var strongTyped = JsonConvert.DeserializeObject<TestMessage>( e.Message );
                 strongTyped.String.ShouldBe( stringPropertyValue );
             };
-            config.MessageReceiving += ( sender, e ) =>
+            config.MessageReceiving += async ( sender, e ) =>
             {
                 e.ShouldBe( config.LatestMessageReceivingEventArgs );
                 e.Topic.ShouldBe( "TestTopic" );

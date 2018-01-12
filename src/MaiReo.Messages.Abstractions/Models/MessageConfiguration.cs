@@ -43,19 +43,21 @@ namespace MaiReo.Messages.Abstractions
         public virtual event MessagePublishingEventHandler MessagePublishing;
         public virtual event MessageReceivingEventHandler MessageReceiving;
 
-        public virtual Task OnMessagePublishingAsync( MessagePublishingEventArgs e, CancellationToken cancellationToken = default( CancellationToken ) )
+        public virtual async Task OnMessagePublishingAsync( MessagePublishingEventArgs e,
+            CancellationToken cancellationToken = default( CancellationToken ) )
         {
-            return Task.Run( () =>
+            await Task.Run(async () =>
             {
-                MessagePublishing?.Invoke( this, e );
+                await MessagePublishing?.Invoke( this, e );
             }, cancellationToken );
         }
 
-        public virtual Task OnMessageReceivingAsync( MessageReceivingEventArgs e, CancellationToken cancellationToken = default( CancellationToken ) )
+        public virtual async Task OnMessageReceivingAsync( MessageReceivingEventArgs e,
+            CancellationToken cancellationToken = default( CancellationToken ) )
         {
-            return Task.Run( () =>
+            await Task.Run(async () =>
             {
-                MessageReceiving?.Invoke( this, e );
+                await MessageReceiving?.Invoke( this, e );
             }, cancellationToken );
         }
     }

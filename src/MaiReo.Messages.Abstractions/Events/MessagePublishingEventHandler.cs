@@ -1,5 +1,7 @@
-﻿namespace MaiReo.Messages.Abstractions.Events
+﻿using System.Threading.Tasks;
+
+namespace MaiReo.Messages.Abstractions.Events
 {
-    public delegate void MessagePublishingEventHandler( object sender, MessagePublishingEventArgs e );
+    public delegate Task MessagePublishingEventHandler( object sender, MessagePublishingEventArgs e );
 
 }

@@ -1,4 +1,6 @@
-﻿namespace MaiReo.Messages.Abstractions.Events
+﻿using System.Threading.Tasks;
+
+namespace MaiReo.Messages.Abstractions.Events
 {
-    public delegate void MessageReceivingEventHandler( object sender, MessageReceivingEventArgs e );
+    public delegate Task MessageReceivingEventHandler( object sender, MessageReceivingEventArgs e );
 }
