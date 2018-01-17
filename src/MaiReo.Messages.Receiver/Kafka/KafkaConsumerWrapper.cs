@@ -1,4 +1,9 @@
-﻿using Confluent;
+﻿#region 程序集 Version=2.1.0
+/*
+ * Kafka消费者包装实现类
+ */
+#endregion
+using Confluent;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using MaiReo.Messages.Abstractions;

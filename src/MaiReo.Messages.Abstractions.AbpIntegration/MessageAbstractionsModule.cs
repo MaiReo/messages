@@ -1,4 +1,11 @@
-﻿using MaiReo.Messages.Abstractions;
+﻿#region 程序集 Version=2.1.2
+/*
+ * Abp模块
+ * 将所有消息处理程序注册到依赖注入容器
+ * 将消息模块配置注册到依赖注入容器
+ */
+#endregion 程序集
+using MaiReo.Messages.Abstractions;
 
 namespace Abp.Modules
 {

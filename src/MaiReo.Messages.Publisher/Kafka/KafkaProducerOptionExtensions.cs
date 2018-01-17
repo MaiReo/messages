@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region 程序集 Version=2.1.0
+/*
+ * 扩展方法。转换配置类为Kafka配置字典
+ */
+#endregion
+using System.Collections.Generic;
 
 namespace MaiReo.Messages.Publisher
 {

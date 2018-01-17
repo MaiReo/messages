@@ -1,4 +1,9 @@
-﻿namespace MaiReo.Messages.Receiver
+﻿#region 程序集 Version=2.1.0
+/*
+ * Kafka消费者配置实现类
+ */
+#endregion
+namespace MaiReo.Messages.Receiver
 {
     public class KafkaConsumerOption : IKafkaConsumerOption
     {

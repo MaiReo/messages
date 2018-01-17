@@ -1,4 +1,9 @@
-﻿using MaiReo.Messages.Abstractions;
+﻿#region 程序集 Version=2.1.0
+/*
+ * 消息发布实现类
+ */
+#endregion
+using MaiReo.Messages.Abstractions;
 using MaiReo.Messages.Abstractions.Events;
 using Newtonsoft.Json;
 using System;

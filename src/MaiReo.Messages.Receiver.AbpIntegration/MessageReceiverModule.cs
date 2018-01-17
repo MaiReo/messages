@@ -1,4 +1,13 @@
-﻿using MaiReo.Messages.Abstractions;
+﻿#region 程序集 Version=2.1.0
+/*
+ * 消息接收模块
+ * 注册自身配置到依赖注入容器
+ * 注册Apache Kafka包装类到依赖注入容器
+ * 注册调用Apache Kafka包装类的消息发送实现类到依赖注入容器
+ * 读取自身配置决定是否启动Apache Kafka监听代理
+ */
+#endregion
+using MaiReo.Messages.Abstractions;
 using MaiReo.Messages.Receiver;
 using System;
 

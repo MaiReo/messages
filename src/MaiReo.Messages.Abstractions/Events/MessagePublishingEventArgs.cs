@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region 程序集 Version=2.1.1
+/*
+ * 发布消息事件参数
+ */
+#endregion
+using System;
 
 namespace MaiReo.Messages.Abstractions.Events
 {

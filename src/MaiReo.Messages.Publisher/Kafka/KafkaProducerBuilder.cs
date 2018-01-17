@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region 程序集 Version=2.1.0
+/*
+ * Kafka生产者构造实现类
+ */
+#endregion
+using System;
 using System.Text;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;

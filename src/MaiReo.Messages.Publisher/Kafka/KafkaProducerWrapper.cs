@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region 程序集 Version=2.1.0
+/*
+ * Kafka生产者包装实现
+ */
+#endregion
+using System;
 using Confluent;
 using Confluent.Kafka;
 using MaiReo.Messages.Abstractions;

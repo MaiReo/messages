@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region 程序集 Version=2.1.1
+/*
+ * 消息包装实现类
+ */
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Text;
 

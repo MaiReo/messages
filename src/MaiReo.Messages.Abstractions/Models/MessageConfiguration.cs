@@ -1,4 +1,9 @@
-﻿using MaiReo.Messages.Abstractions.Events;
+﻿#region 程序集 Version=2.1.1
+/*
+ * 消息配置实现类
+ */
+#endregion
+using MaiReo.Messages.Abstractions.Events;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,6 +15,9 @@ namespace MaiReo.Messages.Abstractions
 {
     public class MessageConfiguration : IMessageConfiguration
     {
+        /// <summary>
+        /// 消息配置默认值
+        /// </summary>
         public static readonly MessageConfiguration Default;
         static MessageConfiguration()
         {
@@ -43,19 +51,19 @@ namespace MaiReo.Messages.Abstractions
         public virtual event MessagePublishingEventHandler MessagePublishing;
         public virtual event MessageReceivingEventHandler MessageReceiving;
 
-        public virtual async Task OnMessagePublishingAsync( MessagePublishingEventArgs e,
+        public virtual Task OnMessagePublishingAsync( MessagePublishingEventArgs e,
             CancellationToken cancellationToken = default( CancellationToken ) )
         {
-            await Task.Run(async () =>
+            return Task.Run(async () =>
             {
                 await MessagePublishing?.Invoke( this, e );
             }, cancellationToken );
         }
 
-        public virtual async Task OnMessageReceivingAsync( MessageReceivingEventArgs e,
+        public virtual Task OnMessageReceivingAsync( MessageReceivingEventArgs e,
             CancellationToken cancellationToken = default( CancellationToken ) )
         {
-            await Task.Run(async () =>
+            return Task.Run(async () =>
             {
                 await MessageReceiving?.Invoke( this, e );
             }, cancellationToken );

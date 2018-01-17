@@ -1,4 +1,10 @@
-﻿using Abp.Dependency;
+﻿#region 程序集 Version=2.1.2
+/*
+ * 将消息处理类注册到依赖注入容器的逻辑
+ */
+#endregion
+
+using Abp.Dependency;
 using Castle.MicroKernel.Registration;
 using MaiReo.Messages.Abstractions;
 

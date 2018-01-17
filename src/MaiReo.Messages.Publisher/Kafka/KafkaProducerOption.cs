@@ -1,4 +1,9 @@
-﻿namespace MaiReo.Messages.Publisher
+﻿#region 程序集 Version=2.1.0
+/*
+ * Kafka生产者的配置实现类
+ */
+#endregion
+namespace MaiReo.Messages.Publisher
 {
     public class KafkaProducerOption : IKafkaProducerOption
     {
