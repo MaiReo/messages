@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="Abp" Version="3.2.4" />
+    <PackageReference Include="Abp" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +25,8 @@
     <PackageIconUrl>https://raw.githubusercontent.com/MaiReo/messages/master/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
+    <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
 
 </Project>

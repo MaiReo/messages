@@ -51,22 +51,56 @@ namespace MaiReo.Messages.Abstractions
         public virtual event MessagePublishingEventHandler MessagePublishing;
         public virtual event MessageReceivingEventHandler MessageReceiving;
 
-        public virtual Task OnMessagePublishingAsync( MessagePublishingEventArgs e,
-            CancellationToken cancellationToken = default( CancellationToken ) )
+        public virtual Task OnMessagePublishingAsync(MessagePublishingEventArgs e,
+            CancellationToken cancellationToken = default( CancellationToken ))
         {
-            return Task.Run(async () =>
+            if (MessagePublishing ==
+#if NET45
+                null
+#else
+                default
+#endif
+                )
             {
-                await MessagePublishing?.Invoke( this, e );
-            }, cancellationToken );
+                return Task.
+#if NET45
+                    Delay(0)
+#else
+                    CompletedTask
+
+#endif
+                    ;
+            }
+            return Task.Run( async () =>
+             {
+                 await MessagePublishing?.Invoke( this, e );
+             }, cancellationToken );
         }
 
-        public virtual Task OnMessageReceivingAsync( MessageReceivingEventArgs e,
-            CancellationToken cancellationToken = default( CancellationToken ) )
+        public virtual Task OnMessageReceivingAsync(MessageReceivingEventArgs e,
+            CancellationToken cancellationToken = default( CancellationToken ))
         {
-            return Task.Run(async () =>
+            if (MessageReceiving ==
+#if NET45
+                null
+#else
+                default
+#endif
+                )
             {
-                await MessageReceiving?.Invoke( this, e );
-            }, cancellationToken );
+                return Task.
+#if NET45
+                    Delay( 0 )
+#else
+                    CompletedTask
+
+#endif
+                    ;
+            }
+            return Task.Run( async () =>
+             {
+                 await MessageReceiving?.Invoke( this, e );
+             }, cancellationToken );
         }
     }
 }
