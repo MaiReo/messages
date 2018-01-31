@@ -54,52 +54,34 @@ namespace MaiReo.Messages.Abstractions
         public virtual Task OnMessagePublishingAsync(MessagePublishingEventArgs e,
             CancellationToken cancellationToken = default( CancellationToken ))
         {
-            if (MessagePublishing ==
-#if NET45
-                null
-#else
-                default
-#endif
-                )
-            {
-                return Task.
+            return Task.Run( async () =>
+             {
+                 await (MessagePublishing?.Invoke( this, e )
+                 ?? Task.
 #if NET45
                     Delay(0)
 #else
                     CompletedTask
 
 #endif
-                    ;
-            }
-            return Task.Run( async () =>
-             {
-                 await MessagePublishing?.Invoke( this, e );
+                    );
              }, cancellationToken );
         }
 
         public virtual Task OnMessageReceivingAsync(MessageReceivingEventArgs e,
             CancellationToken cancellationToken = default( CancellationToken ))
         {
-            if (MessageReceiving ==
-#if NET45
-                null
-#else
-                default
-#endif
-                )
-            {
-                return Task.
-#if NET45
-                    Delay( 0 )
-#else
-                    CompletedTask
-
-#endif
-                    ;
-            }
             return Task.Run( async () =>
              {
-                 await MessageReceiving?.Invoke( this, e );
+                 await (MessageReceiving?.Invoke( this, e )
+                 ?? Task.
+#if NET45
+                    Delay(0)
+#else
+             CompletedTask
+
+#endif
+                 );
              }, cancellationToken );
         }
     }
